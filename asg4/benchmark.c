@@ -1,63 +1,21 @@
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <string.h> 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int exitDecistion(){
     int i;
-    i = getchar();
+    scanf("%i", &i);
     printf("\n");
     return i;
 }
 
-void craeteFile(int numberOfFiles){
-    FILE *files[numberOfFiles];
-    for(int i = 0; i < numberOfFiles; i++){
-        char fileName[20];
-        sprintf(fileName, "%f", i);
-        files[i] = fopen(fileName, "w");
-    }
-    fclose(files);
-}
-
-void writeFile(){
-    char result[3];
-    int fileEdit = 0;
-    char str[100];
-    FILE *outfile;
-    do{
-        printf("Please enter the file that you want to write(from 1-100): ");
-        fileEdit = getchar();
-        sprintf(result, "%f", fileEdit); 
-        printf("\nPlease enter below what do you want to write: \n");
-        gets(str);
-        outfile = fopen (result, "w+"); 
-        if (outfile == NULL) { 
-                fprintf(stderr, "\nError opend file\n"); 
-                exit (1); 
-        }
-        fwrite(str , 1 , sizeof(str) , outfile); 
-        fclose(outfile);
-        printf("\nWrite more? (0 = YES, 1 = NO)");
-    }while(exitDecistion() == 0);
-}
-
-void readFile(int numberOfFiles){
-    char result[3];
-    char read[100];
+void createFile(int numberOfFiles){
     FILE *files;
-    printf("Reading files from 1 to %d", numberOfFiles);
-    for(int i = 0; i < numberOfFiles; i++){
-        char fileName[3];
-        sprintf(fileName, "%f", i);
-        files = fopen(fileName, "w+");
-        if(files == NULL){
-            fprintf(stderr, "\nError opend file\n"); 
-            exit (1); 
-        }
-        fseek(files, 0, SEEK_SET);
-        fread(read, strlen(read)+1, 1, files);
-        printf("\nThe file is: %d\n", i);
-        printf("The file data is: %s\n", read);
+    printf("Number of files: %i", numberOfFiles);
+    char fileName[10];
+    for(int i = 1; i <= numberOfFiles; ++i){
+        itoa(i, fileName, 10);
+        files = fopen(fileName, "w");
         fclose(files);
     }
 }
@@ -65,10 +23,9 @@ void readFile(int numberOfFiles){
 void rmFile(int numberOfFiles){
     int stat = 1;
     FILE *files;
-    char fileName[3];
-
-    for(int i = 0; i < numberOfFiles; i++){
-        sprintf(fileName, "%f", i);
+    char fileName[10];
+    for(int i = 1; i <= numberOfFiles; i++){
+        itoa(i, fileName, 10);
         stat = remove(fileName);
 
         if(stat == 0){
@@ -76,18 +33,64 @@ void rmFile(int numberOfFiles){
         }
         else{
             printf("%s file deleted un-successfully.\n", fileName);
-            perror("Following error occurred");
+            perror("Following error occurred: ");
         }
     }
 }
 
-main() {
+void writeFile(){
+    int fileEdit = 0;
+    char fileName[10];
+    char str[20];
+    FILE *outfile;
+    do{
+        printf("Please enter the file that you want to write(from 0-99): ");
+        scanf("%i", &fileEdit);
+        itoa(fileEdit, fileName, 10);
+        printf("\nPlease enter below what do you want to write: \n");
+        scanf("%s", &str);
+        outfile = fopen (fileName, "w+");
+        if (outfile == NULL) {
+                fprintf(stderr, "\nError opend file\n");
+                exit (1);
+        }
+        fprintf(outfile, str);
+        fclose(outfile);
+        printf("\nWrite more? (0 = YES, 1 = NO)");
+    }while(exitDecistion() == 0);
+}
+
+void readFile(int numberOfFiles){
+    FILE *files;
+    char fileName[3];
+    printf("Reading files from 1 to %d", numberOfFiles);
+    for(int i = 1; i <= numberOfFiles; i++){
+        char read[100] = "";
+        itoa(i, fileName, 10);
+        files = fopen(fileName, "r");
+        if(files == NULL){
+            fprintf(stderr, "\nError opend file\n");
+            exit (1);
+        }
+        while(!feof(files)){
+            fgets(read, 100, files);
+            puts(read);
+        }
+
+        printf("\nThe file is: %i\n", i);
+        printf("The file data is: %s\n", read);
+        fclose(files);
+    }
+}
+
+int main() {
     int fileCounters = 0;
 
     do{
         printf("This is the bench mark for the file system\n");
         printf("Please enter how many files that you want to Create: ");
-        fileCounters = getchar();
+        scanf("%i", &fileCounters);
+        printf("Number of files: %i", fileCounters);
         if(fileCounters == 0){
             printf("The numbers of file can not be 0!\n");
         }
