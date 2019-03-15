@@ -18,7 +18,7 @@ void createFile(int numberOfFiles){
     char *fileName[10];
 
     for(int i = 1; i <= numberOfFiles; i++){
-        char filePath[] = "C:\\Users\\wangc\\Desktop\\123\\fileFolder\\";
+        char filePath[] = "//home//vash//cmps//asg4//testfile";
         sprintf(fileName, "%d", i);
         strcat(filePath, fileName);
         files = fopen(filePath, "w");
@@ -34,7 +34,7 @@ void rmFile(int numberOfFiles){
     scanf("%s", &str);
     //char *filePath[50] = "path";
     for(int i = 1; i <= numberOfFiles; i++){
-        char filePath[] = "C:\\Users\\wangc\\Desktop\\123\\fileFolder\\";
+        char filePath[] = "//home//vash//cmps//asg4//testfile";
         sprintf(fileName, "%d", i);
         //strcat(filePath, fileName);
         strcat(filePath, fileName);
@@ -61,7 +61,7 @@ void writeFile(int numberOfFiles){
     printf("Ramdom generating file size... \n");
 
     for(int i = 1; i <= numberOfFiles; i++){    //from file 1-numberOfFiles start to add size to files
-        char filePath[] = "C:\\Users\\wangc\\Desktop\\123\\fileFolder\\";
+        char filePath[] = "//home//vash//cmps//asg4//testfile";
         random = rand()%10;
         if(random <= 5){ //2kb
             for(int n = 0; n < 2000; n++){
@@ -101,7 +101,7 @@ void readFile(int numberOfFiles){
 
     printf("Reading files from 1 to %d", numberOfFiles);
     for(int i = 1; i <= numberOfFiles; i++){
-        char filePath[] = "C:\\Users\\wangc\\Desktop\\123\\fileFolder\\";
+        char filePath[] = "//home//vash//cmps//asg4//testfile";
         printf("File Name: %i\n", i);
         sprintf(fileName, "%d", i);
 
