@@ -7,5 +7,5 @@ benchmark: benchmark.c
 	chmod +x benchmark
 
 clean:
-        rm -f ./benchmark *.core
+	rm -f ./benchmark *.core
 
