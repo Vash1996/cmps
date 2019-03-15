@@ -92,6 +92,7 @@ void readFile(int numberOfFiles){
     FILE *files;
     char *fileName[3];
     struct stat filestat;
+    long int res;
     //char *filePath[50] = "path";
     printf("Reading files from 1 to %d", numberOfFiles);
     for(int i = 1; i <= numberOfFiles; i++){
@@ -102,10 +103,23 @@ void readFile(int numberOfFiles){
         printf("    File modify time %s", ctime(&filestat.st_mtime));
         printf("    File changed time %s", ctime(&filestat.st_ctime));
         //printf("    File birth time %s", ctime(&filestat.st_birthtime));
+        files = fopen(fileName, "r");
+        if(files == NULL){
+            fprintf(stderr, "\nError opend file\n");
+            exit (1);
+        }
+        fseek(files, 0L, SEEK_END);
+        res = ftell(files);
+        if (res != -1) {
+            printf("    Size of the file is %ld bytes \n", res);
+        }
+        else{
+            printf("        Failed to read file size \n");
+        }
 
     /*
         char read[100] = "";
-        sprintf(fileName, "%d", i);
+
         strcat(filePath, fileName);
         files = fopen(fileName, "r");
         if(files == NULL){
@@ -121,7 +135,7 @@ void readFile(int numberOfFiles){
         printf("\nThe file is: %i\n", i);
         printf("The file data is: %s\n", read);
     */
-        //fclose(files);
+        fclose(files);
     }
 }
 
