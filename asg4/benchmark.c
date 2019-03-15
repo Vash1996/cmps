@@ -111,6 +111,7 @@ void readFile(int numberOfFiles){
         }
         fseek(files, 0L, SEEK_END);
         res = ftell(files);
+        printf("    Real Size of the file is %ld bytes \n", res);
         if (res != -1) {
             size = res%10;
             res = res - size + 200;
