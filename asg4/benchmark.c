@@ -12,9 +12,11 @@ int exitDecistion(){
 void createFile(int numberOfFiles){
     FILE *files;
     printf("Number of files: %i", numberOfFiles);
-    char fileName[10];
+    char *fileName[10];
+    //char *filePath[50] = "path";
     for(int i = 1; i <= numberOfFiles; ++i){
-        itoa(i, fileName, 10);
+        sprintf(fileName, "%d", i);
+        //strcat(filePath, fileName);
         files = fopen(fileName, "w");
         fclose(files);
     }
@@ -23,11 +25,14 @@ void createFile(int numberOfFiles){
 void rmFile(int numberOfFiles){
     int stat = 1;
     FILE *files;
-    char fileName[10];
+    char *fileName[10];
+    char str[20];
+    scanf("%s", &str);
+    //char *filePath[50] = "path";
     for(int i = 1; i <= numberOfFiles; i++){
-        itoa(i, fileName, 10);
+        sprintf(fileName, "%d", i);
+        //strcat(filePath, fileName);
         stat = remove(fileName);
-
         if(stat == 0){
             printf("%s file deleted successfully.\n", fileName);
         }
@@ -38,17 +43,37 @@ void rmFile(int numberOfFiles){
     }
 }
 
-void writeFile(){
+void writeFile(int numberOfFiles){
     int fileEdit = 0;
-    char fileName[10];
-    char str[20];
+    char *fileName[3];
+    char str[10000];
+    int random;
+    time_t t;
+    //char *filePath[50] = "path";
     FILE *outfile;
-    do{
-        printf("Please enter the file that you want to write(from 0-99): ");
-        scanf("%i", &fileEdit);
-        itoa(fileEdit, fileName, 10);
-        printf("\nPlease enter below what do you want to write: \n");
-        scanf("%s", &str);
+    srand((unsigned)time(&t));
+
+    printf("Ramdom generating file size... \n");
+    //strcat(filePath, fileName);
+    for(int i = 1; i <= numberOfFiles; i++){    //from file 1-numberOfFiles start to add size to files
+        random = rand()%10;
+        if(random <= 5){ //2kb
+            for(int n = 0; n < 2000; n++){
+                str[n] = 'a';
+            }
+        }
+        else if (random > 8){  //10kb
+            for(int n = 0; n < 10000; n++){
+                str[n] = 'a';
+            }
+        }
+        else{ //6kb
+            for(int n = 0; n < 6000; n++){
+                str[n] = 'a';
+            }
+        }
+        sprintf(fileName, "%d", i);
+
         outfile = fopen (fileName, "w+");
         if (outfile == NULL) {
                 fprintf(stderr, "\nError opend file\n");
@@ -56,17 +81,19 @@ void writeFile(){
         }
         fprintf(outfile, str);
         fclose(outfile);
-        printf("\nWrite more? (0 = YES, 1 = NO)");
-    }while(exitDecistion() == 0);
+        memset(str, 0, sizeof str);
+    }
 }
 
 void readFile(int numberOfFiles){
     FILE *files;
-    char fileName[3];
+    char *fileName[3];
+    //char *filePath[50] = "path";
     printf("Reading files from 1 to %d", numberOfFiles);
     for(int i = 1; i <= numberOfFiles; i++){
         char read[100] = "";
-        itoa(i, fileName, 10);
+        sprintf(fileName, "%d", i);
+        //strcat(filePath, fileName);
         files = fopen(fileName, "r");
         if(files == NULL){
             fprintf(stderr, "\nError opend file\n");
@@ -97,8 +124,8 @@ int main() {
         else{
             createFile(fileCounters);
             printf("\nfile Created!\n");
-            writeFile();
-            readFile(fileCounters);
+            writeFile(fileCounters);
+            //readFile(fileCounters);
             rmFile(fileCounters);
         }
         printf("Run bench again? (0 = YES, 1 = NO)");
