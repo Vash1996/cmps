@@ -15,7 +15,7 @@ int exitDecistion(){
 void createFile(int numberOfFiles){
     FILE *files;
     printf("Number of files: %i", numberOfFiles);
-    char *fileName[10];
+    char fileName[10];
 
     for(int i = 1; i <= numberOfFiles; i++){
         char filePath[] = "/home/vash/jzhao33/asgn4/aofs_dir/";
@@ -29,7 +29,7 @@ void createFile(int numberOfFiles){
 void rmFile(int numberOfFiles){
     int stat = 1;
     FILE *files;
-    char *fileName[10];
+    char fileName[10];
     char str[20];
     scanf("%s", &str);
     //char *filePath[50] = "path";
@@ -51,7 +51,7 @@ void rmFile(int numberOfFiles){
 
 void writeFile(int numberOfFiles){
     int fileEdit = 0;
-    char *fileName[3];
+    char fileName[3];
     char str[10001];
     int random;
     time_t t;
@@ -94,7 +94,7 @@ void writeFile(int numberOfFiles){
 
 void readFile(int numberOfFiles){
     FILE *files;
-    char *fileName[3];
+    char fileName[3];
     struct stat filestat;
     long int res;
     long int size;
