@@ -93,6 +93,7 @@ void readFile(int numberOfFiles){
     char *fileName[3];
     struct stat filestat;
     long int res;
+    long int size;
     //char *filePath[50] = "path";
     printf("Reading files from 1 to %d", numberOfFiles);
     for(int i = 1; i <= numberOfFiles; i++){
@@ -111,6 +112,9 @@ void readFile(int numberOfFiles){
         fseek(files, 0L, SEEK_END);
         res = ftell(files);
         if (res != -1) {
+            size = res%10;
+            res = res - size;
+
             printf("    Size of the file is %ld bytes \n", res);
         }
         else{
