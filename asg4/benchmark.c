@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 int exitDecistion(){
     int i;
@@ -88,17 +91,28 @@ void writeFile(int numberOfFiles){
 void readFile(int numberOfFiles){
     FILE *files;
     char *fileName[3];
+    struct stat filestat;
     //char *filePath[50] = "path";
     printf("Reading files from 1 to %d", numberOfFiles);
     for(int i = 1; i <= numberOfFiles; i++){
+        printf("File Name: %i\n", i);
+        sprintf(fileName, "%d", i);
+        stat(fileName,&filestat);
+        printf("    File access time %s", ctime(&filestat.st_atime));
+        printf("    File modify time %s", ctime(&filestat.st_mtime));
+        printf("    File changed time %s", ctime(&filestat.st_ctime));
+        //printf("    File birth time %s", ctime(&filestat.st_birthtime));
+
+    /*
         char read[100] = "";
         sprintf(fileName, "%d", i);
-        //strcat(filePath, fileName);
+        strcat(filePath, fileName);
         files = fopen(fileName, "r");
         if(files == NULL){
             fprintf(stderr, "\nError opend file\n");
             exit (1);
         }
+
         while(!feof(files)){
             fgets(read, 100, files);
             puts(read);
@@ -106,7 +120,8 @@ void readFile(int numberOfFiles){
 
         printf("\nThe file is: %i\n", i);
         printf("The file data is: %s\n", read);
-        fclose(files);
+    */
+        //fclose(files);
     }
 }
 
@@ -125,7 +140,7 @@ int main() {
             createFile(fileCounters);
             printf("\nfile Created!\n");
             writeFile(fileCounters);
-            //readFile(fileCounters);
+            readFile(fileCounters);
             rmFile(fileCounters);
         }
         printf("Run bench again? (0 = YES, 1 = NO)");
