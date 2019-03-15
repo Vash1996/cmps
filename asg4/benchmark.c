@@ -16,11 +16,12 @@ void createFile(int numberOfFiles){
     FILE *files;
     printf("Number of files: %i", numberOfFiles);
     char *fileName[10];
-    //char *filePath[50] = "path";
-    for(int i = 1; i <= numberOfFiles; ++i){
+
+    for(int i = 1; i <= numberOfFiles; i++){
+        char filePath[] = "C:\\Users\\wangc\\Desktop\\123\\fileFolder\\";
         sprintf(fileName, "%d", i);
-        //strcat(filePath, fileName);
-        files = fopen(fileName, "w");
+        strcat(filePath, fileName);
+        files = fopen(filePath, "w");
         fclose(files);
     }
 }
@@ -33,9 +34,11 @@ void rmFile(int numberOfFiles){
     scanf("%s", &str);
     //char *filePath[50] = "path";
     for(int i = 1; i <= numberOfFiles; i++){
+        char filePath[] = "C:\\Users\\wangc\\Desktop\\123\\fileFolder\\";
         sprintf(fileName, "%d", i);
         //strcat(filePath, fileName);
-        stat = remove(fileName);
+        strcat(filePath, fileName);
+        stat = remove(filePath);
         if(stat == 0){
             printf("%s file deleted successfully.\n", fileName);
         }
@@ -49,35 +52,36 @@ void rmFile(int numberOfFiles){
 void writeFile(int numberOfFiles){
     int fileEdit = 0;
     char *fileName[3];
-    char str[10000];
+    char str[10001];
     int random;
     time_t t;
-    //char *filePath[50] = "path";
     FILE *outfile;
     srand((unsigned)time(&t));
 
     printf("Ramdom generating file size... \n");
-    //strcat(filePath, fileName);
+
     for(int i = 1; i <= numberOfFiles; i++){    //from file 1-numberOfFiles start to add size to files
+        char filePath[] = "C:\\Users\\wangc\\Desktop\\123\\fileFolder\\";
         random = rand()%10;
         if(random <= 5){ //2kb
-            for(int n = 0; n < 1800; n++){
+            for(int n = 0; n < 2000; n++){
                 str[n] = 'a';
             }
         }
         else if (random > 8){  //10kb
-            for(int n = 0; n < 9800; n++){
+            for(int n = 0; n < 10000; n++){
                 str[n] = 'a';
             }
         }
         else{ //6kb
-            for(int n = 0; n < 5800; n++){
+            for(int n = 0; n < 6000; n++){
                 str[n] = 'a';
             }
         }
         sprintf(fileName, "%d", i);
+        strcat(filePath, fileName);
 
-        outfile = fopen (fileName, "w+");
+        outfile = fopen (filePath, "w+");
         if (outfile == NULL) {
                 fprintf(stderr, "\nError opend file\n");
                 exit (1);
@@ -94,52 +98,40 @@ void readFile(int numberOfFiles){
     struct stat filestat;
     long int res;
     long int size;
-    //char *filePath[50] = "path";
+
     printf("Reading files from 1 to %d", numberOfFiles);
     for(int i = 1; i <= numberOfFiles; i++){
+        char filePath[] = "C:\\Users\\wangc\\Desktop\\123\\fileFolder\\";
         printf("File Name: %i\n", i);
         sprintf(fileName, "%d", i);
-        stat(fileName,&filestat);
+
+        strcat(filePath, fileName);
+        stat(filePath,&filestat);
+
+        printf("file path %s\n",filePath);
+
         printf("    File access time %s", ctime(&filestat.st_atime));
         printf("    File modify time %s", ctime(&filestat.st_mtime));
         printf("    File changed time %s", ctime(&filestat.st_ctime));
-        //printf("    File birth time %s", ctime(&filestat.st_birthtime));
-        files = fopen(fileName, "r");
+
+
+
+        files = fopen(filePath, "r");
+
+
         if(files == NULL){
             fprintf(stderr, "\nError opend file\n");
             exit (1);
         }
         fseek(files, 0L, SEEK_END);
         res = ftell(files);
-        printf("    Real Size of the file is %ld bytes \n", res);
         if (res != -1) {
-            size = res%10;
-            res = res - size + 200;
-
-            printf("    Size of the file is %ld bytes \n", res);
+            res = res / 1000;
+            printf("    Size of the file is %ld KB \n", res);
         }
         else{
             printf("        Failed to read file size \n");
         }
-
-    /*
-        char read[100] = "";
-
-        strcat(filePath, fileName);
-        files = fopen(fileName, "r");
-        if(files == NULL){
-            fprintf(stderr, "\nError opend file\n");
-            exit (1);
-        }
-
-        while(!feof(files)){
-            fgets(read, 100, files);
-            puts(read);
-        }
-
-        printf("\nThe file is: %i\n", i);
-        printf("The file data is: %s\n", read);
-    */
         fclose(files);
     }
 }
