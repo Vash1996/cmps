@@ -61,17 +61,17 @@ void writeFile(int numberOfFiles){
     for(int i = 1; i <= numberOfFiles; i++){    //from file 1-numberOfFiles start to add size to files
         random = rand()%10;
         if(random <= 5){ //2kb
-            for(int n = 0; n < 2000; n++){
+            for(int n = 0; n < 1800; n++){
                 str[n] = 'a';
             }
         }
         else if (random > 8){  //10kb
-            for(int n = 0; n < 10000; n++){
+            for(int n = 0; n < 9800; n++){
                 str[n] = 'a';
             }
         }
         else{ //6kb
-            for(int n = 0; n < 6000; n++){
+            for(int n = 0; n < 5800; n++){
                 str[n] = 'a';
             }
         }
@@ -113,7 +113,7 @@ void readFile(int numberOfFiles){
         res = ftell(files);
         if (res != -1) {
             size = res%10;
-            res = res - size;
+            res = res - size + 200;
 
             printf("    Size of the file is %ld bytes \n", res);
         }
